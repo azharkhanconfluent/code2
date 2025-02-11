@@ -1,0 +1,45 @@
+You have now built your own image and customized it. After customizing the image, you created your own image, and once it was ready, we pushed it to Docker Hub, which is a free repository where you can upload your images and also pull images created by others.
+
+Now, instead of pushing this image to Docker's free repository, we can push our own image to AWS's Docker environment called ECR (Elastic Container Registry). To push the image to AWS ECR, follow the necessary steps to create a repository, tag your image, authenticate with AWS, and push your image to the registry.
+
+
+########## first step: 
+To create an IAM user, go to the IAM section in the AWS Console and click on Users, then select Add User. Enter the user details and choose Programmatic Access to create an access key. Once the user is created, go to the Security Credentials tab and click Create New Access Key to generate an Access Key ID and Secret Access Key. Be sure to download the key file or copy the credentials for later use. Next, go to the Permissions tab to assign permissions by either attaching policies directly or adding the user to a group with the necessary permissions (like AmazonEC2ContainerRegistryFullAccess). If required, you can also set a Permission Boundary in the Permissions Boundary section to restrict the actions the user can perform. This setup will provide the IAM user with the required permissions to access AWS services and resources.
+
+creat IAM user and go to  securety credential to creat acces key and seceret key after that go to permission and in permission go to permission boundary and acces 
+We need to connect to our AWS account and configure the AWS CLI by using the aws configure command in the command prompt. When prompted, enter your AWS Access Key and Secret Key, along with your preferred region and output format. This will allow the AWS CLI to authenticate and interact with AWS services.
+
+aws configure
+AWS Access Key ID [****************V2MH]: type ur access key
+AWS Secret Access Key [****************zIu6]:type ur secret acces key 
+Default region name [None]:
+Default output format [None]:
+
+
+#####second step: 
+First, create a folder called ECR repository, just like you did in Docker Hub. After creating the repository, tag your local Docker image with this repository using the docker tag command. Once tagged, try to push the image, but you will get an error stating that you are not logged into the Docker repository. When you create the ECR repository, AWS provides a command to log in. Copy that command and run it on your local machine using the command prompt. If your AWS CLI is configured correctly, you will be logged into the repository. After logging in, push the Docker image again, and it will be successfully uploaded to your ECR repository.
+
+login command :
+(aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 869935079771.dkr.ecr.eu-north-1.amazonaws.com) 
+Login Succeeded 
+
+If you have successfully logged in, check your Docker images using the command 
+(docker images). 
+
+Then, tag one of the images from your Docker images using the command 
+(docker tag nginx:latest 869935079771.dkr.ecr.eu-north-1.amazonaws.com/technoman:latest). 
+
+You can get this command from the View Push Commands option in your ECR repository. If no error is shown, it means your image has been tagged successfully.
+ 
+To check if your image is tagged or not, run the command docker images again and verify that your image is listed with the correct tag. 
+ If your image is successfully tagged, then push it to your repository using the docker push command.
+ And check on the repository page to confirm that your image has been added.
+
+
+
+
+
+
+
+
+  
